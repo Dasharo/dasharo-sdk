@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [[ -v USER_ID ]]; then
 	usermod -u $USER_ID coreboot
 fi
@@ -7,4 +8,3 @@ if [[ -v GROUP ]]; then
 fi
 
 runuser -u coreboot -- "$@"
-
