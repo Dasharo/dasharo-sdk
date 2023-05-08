@@ -19,6 +19,15 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A59/UEFIExtract_
     mv UEFIExtract /usr/local/bin && \
     rm UEFIExtract_NE_A59_linux_x86_64.zip
 
+RUN git clone https://github.com/coreboot/coreboot.git \
+      -b master \
+      --depth 1 && \
+    cd coreboot && \
+    git checkout 497fea7d673b201b044a70baeb93ef04e175fa58 && \
+    cd util/cbfstool && \
+    make && \
+    make install
+
 # Build vboot tools. We should use a common revision of vboot tools there,
 # which is known to support correctly all of the Dasharo platforms.
 RUN git clone https://github.com/Dasharo/vboot.git \
@@ -31,5 +40,8 @@ RUN git clone https://github.com/Dasharo/vboot.git \
     make install && \
     unset USE_FLASHROM && \
     rm -rf tests build
+
+# Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
+ENV CBFSTOOL=/usr/local/bin/cbfstool
 
 ENTRYPOINT ["/entrypoint.sh"]
