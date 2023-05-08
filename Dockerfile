@@ -10,7 +10,6 @@ RUN chmod +x /entrypoint.sh
 RUN apt-get update && \
     apt-get install -y \
     gpg \
-    libflashrom-dev \
     unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -27,8 +26,10 @@ RUN git clone https://github.com/Dasharo/vboot.git \
       --depth 1 && \
     cd vboot && \
     git checkout 22134690d7ced7b2ea824b71b597bb73586d99c6 && \
+    export USE_FLASHROM=0 && \
     make && \
     make install && \
+    unset USE_FLASHROM && \
     rm -rf tests build
 
 ENTRYPOINT ["/entrypoint.sh"]
