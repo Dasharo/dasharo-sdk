@@ -23,10 +23,10 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A59/UEFIExtract_
 # Build vboot tools. We should use a common revision of vboot tools there,
 # which is known to support correctly all of the Dasharo platforms.
 RUN git clone https://github.com/Dasharo/vboot.git \
-      -b dasharo \
+      -b master \
       --depth 1 && \
     cd vboot && \
-    git checkout dc68f9f1b56d92f76026dca490e79493599ff4cf && \
+    git checkout 22134690d7ced7b2ea824b71b597bb73586d99c6 && \
     make && \
     make install && \
     rm -rf tests build
