@@ -1,6 +1,4 @@
-FROM coreboot/coreboot-sdk:2021-09-23_b0d87f753c
-
-MAINTAINER Michał Kopeć <michal.kopec@3mdeb.com>
+FROM coreboot/coreboot-sdk:2023-06-04_44f676afc9
 
 USER root
 
@@ -8,8 +6,11 @@ COPY ./scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y \
     gpg \
+    imagemagick \
+    uuid-runtime \
     unzip \
     libxcb-icccm4 \
     libxcb-image0 \
@@ -21,31 +22,24 @@ RUN apt-get update && \
     libxcb-xfixes0 \
     libxcb-xinerama0 \
     libxcb-xkb1 \
-    libxkbcommon-x11-0 && \
+    libxkbcommon-x11-0 \
+    && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN wget https://github.com/LongSoft/UEFITool/releases/download/A59/UEFIExtract_NE_A59_linux_x86_64.zip && \
-    unzip UEFIExtract_NE_A59_linux_x86_64.zip && \
-    mv UEFIExtract /usr/local/bin && \
-    rm UEFIExtract_NE_A59_linux_x86_64.zip
+RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_NE_A68_x64_linux.zip && \
+    unzip UEFIExtract_NE_A68_x64_linux.zip && \
+    mv uefiextract /usr/local/bin && \
+    rm UEFIExtract_NE_A68_x64_linux.zip
 
 RUN git clone https://github.com/coreboot/coreboot.git && \
     cd coreboot && \
-    git checkout 497fea7d673b201b044a70baeb93ef04e175fa58 && \
+    git checkout c1386ef6128922f49f93de5690ccd130a26eecf2 && \
     cd util/cbfstool && \
     make && \
     make install && \
-    cd ../../../ && \
-    rm -rf coreboot
-
-# Build vboot tools. We should use a common revision of vboot tools there,
-# which is known to support correctly all of the Dasharo platforms.
-RUN git clone https://github.com/Dasharo/vboot.git \
-      -b master \
-      --depth 1 && \
-    cd vboot && \
-    git checkout 22134690d7ced7b2ea824b71b597bb73586d99c6 && \
+    cd ../../ && \
+    cd 3rdparty/vboot && \
     export USE_FLASHROM=0 && \
     make && \
     make install && \
