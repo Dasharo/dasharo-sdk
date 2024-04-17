@@ -32,9 +32,8 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_
     mv uefiextract /usr/local/bin && \
     rm UEFIExtract_NE_A68_x64_linux.zip
 
-RUN git clone https://github.com/coreboot/coreboot.git && \
+RUN git clone https://github.com/coreboot/coreboot.git -b 24.02.01 --depth=1 && \
     cd coreboot && \
-    git checkout 24.02.01 && \
     cd util/cbfstool && \
     make && \
     make install && \
@@ -45,7 +44,6 @@ RUN git clone https://github.com/coreboot/coreboot.git && \
     make install && \
     unset USE_FLASHROM && \
     rm -rf tests build
-
 
 RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
     cd wolfssl && \
