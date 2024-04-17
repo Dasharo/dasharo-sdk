@@ -46,6 +46,14 @@ RUN git clone https://github.com/coreboot/coreboot.git && \
     unset USE_FLASHROM && \
     rm -rf tests build
 
+
+RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
+    cd wolfssl && \
+    ./autogen.sh && \
+    ./configure --libdir /lib/x86_64-linux-gnu/ && \
+    make && \
+    make install
+
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
 
