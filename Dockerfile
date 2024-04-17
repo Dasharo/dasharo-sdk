@@ -34,7 +34,7 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_
 
 RUN git clone https://github.com/coreboot/coreboot.git && \
     cd coreboot && \
-    git checkout c1386ef6128922f49f93de5690ccd130a26eecf2 && \
+    git checkout 24.02.01 && \
     cd util/cbfstool && \
     make && \
     make install && \
