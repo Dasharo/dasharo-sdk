@@ -32,8 +32,11 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_
     mv uefiextract /usr/local/bin && \
     rm UEFIExtract_NE_A68_x64_linux.zip
 
-RUN git clone https://github.com/coreboot/coreboot.git -b 24.02.01 --depth=1 && \
+# We need the latest smmstoretool changes to be included,
+# not part of the release yet
+RUN git clone https://github.com/coreboot/coreboot.git  && \
     cd coreboot && \
+    git checkout 05bb053e6356b30bfa2ae27d0b38e592e4c58111 && \
     cd util/cbfstool && \
     make && \
     make install && \
@@ -43,6 +46,10 @@ RUN git clone https://github.com/coreboot/coreboot.git -b 24.02.01 --depth=1 && 
     make && \
     make install && \
     unset USE_FLASHROM && \
+    cd ../../ && \
+    cd util/smmstoretool && \
+    make && \
+    make install && \
     rm -rf tests build
 
 RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
