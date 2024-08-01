@@ -59,6 +59,22 @@ RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 
     make && \
     make install
 
+# ifdtool is needed for DCU
+RUN cd coreboot && \
+    make -C util/ifdtool && \
+    make -C util/ifdtool install
+
+# nvmtool is needed for DCU
+RUN rm -rf coreboot && \
+    git clone https://review.coreboot.org/coreboot.git && \
+    cd coreboot && \
+    git fetch https://review.coreboot.org/coreboot refs/changes/29/67129/5 && \
+    git checkout -b change-67129 FETCH_HEAD && \
+    cd util/nvmtool && \
+    make && \
+    cp nvm /usr/local/bin/nvm
+
+
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
 
