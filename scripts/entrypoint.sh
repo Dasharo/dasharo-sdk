@@ -3,7 +3,7 @@
 if [[ -v USER_ID ]]; then
 	usermod -u $USER_ID coreboot
 fi
-if [[ -v GROUP ]]; then
+if [[ -v GROUP_ID ]]; then
 	groupmod -g $GROUP_ID coreboot
 fi
 
