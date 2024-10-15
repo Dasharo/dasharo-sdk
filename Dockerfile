@@ -38,12 +38,6 @@ RUN git clone https://github.com/coreboot/coreboot.git  && \
     make && \
     make install && \
     cd ../../ && \
-    cd 3rdparty/vboot && \
-    export USE_FLASHROM=0 && \
-    make && \
-    make install && \
-    unset USE_FLASHROM && \
-    cd ../../ && \
     cd util/smmstoretool && \
     make && \
     make install && \
@@ -74,6 +68,19 @@ RUN rm -rf coreboot && \
     cp nvm /usr/local/bin/nvm && \
     cd .. && \
     rm -rf coreboot
+
+# Build vboot tools. We should use a common revision of vboot tools there,
+# which is known to support correctly all of the Dasharo platforms.
+RUN git clone https://github.com/Dasharo/vboot.git \
+      -b master \
+      --depth 1 && \
+    cd vboot && \
+    git checkout 22134690d7ced7b2ea824b71b597bb73586d99c6 && \
+    export USE_FLASHROM=0 && \
+    make && \
+    make install && \
+    unset USE_FLASHROM && \
+    rm -rf tests build
 
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
