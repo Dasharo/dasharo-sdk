@@ -2,9 +2,6 @@ FROM coreboot/coreboot-sdk:2024-02-18_732134932b
 
 USER root
 
-COPY ./scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -57,7 +54,9 @@ RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 
     ./autogen.sh && \
     ./configure --libdir /lib/x86_64-linux-gnu/ && \
     make && \
-    make install
+    make install && \
+    cd .. && \
+    rm -rf wolfssl
 
 # ifdtool is needed for DCU
 RUN cd coreboot && \
@@ -72,10 +71,11 @@ RUN rm -rf coreboot && \
     git checkout -b change-67129 FETCH_HEAD && \
     cd util/nvmtool && \
     make && \
-    cp nvm /usr/local/bin/nvm
-
+    cp nvm /usr/local/bin/nvm && \
+    cd .. && \
+    rm -rf coreboot
 
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
 
-ENTRYPOINT ["/entrypoint.sh"]
+USER coreboot
