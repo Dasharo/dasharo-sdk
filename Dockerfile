@@ -1,4 +1,4 @@
-FROM coreboot/coreboot-sdk:2021-09-23_b0d87f753c
+FROM coreboot/coreboot-sdk:2024-02-18_732134932b
 
 MAINTAINER Michał Kopeć <michal.kopec@3mdeb.com>
 
