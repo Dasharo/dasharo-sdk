@@ -67,7 +67,7 @@ RUN rm -rf coreboot && \
     cd util/nvmtool && \
     make && \
     cp nvm /usr/local/bin/nvm && \
-    cd .. && \
+    cd ../../.. && \
     rm -rf coreboot
 
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
