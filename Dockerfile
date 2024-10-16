@@ -39,6 +39,8 @@ RUN git clone https://github.com/coreboot/coreboot.git  && \
     export USE_FLASHROM=0 && \
     make -C 3rdparty/vboot && \
     make -C 3rdparty/vboot install && \
+    mkdir /vboot && \
+    cp -r 3rdparty/vboot/scripts /vboot/ && \
     unset USE_FLASHROM && \
     make -C util/smmstoretool && \
     make -C util/smmstoretool install && \
