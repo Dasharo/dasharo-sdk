@@ -2,9 +2,6 @@ FROM coreboot/coreboot-sdk:2024-02-18_732134932b
 
 USER root
 
-COPY ./scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
@@ -36,33 +33,30 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_
 # not part of the release yet
 RUN git clone https://github.com/coreboot/coreboot.git  && \
     cd coreboot && \
-    git checkout 05bb053e6356b30bfa2ae27d0b38e592e4c58111 && \
-    cd util/cbfstool && \
-    make && \
-    make install && \
-    cd ../../ && \
-    cd 3rdparty/vboot && \
+    git checkout -f 24.08 && \
+    make -C util/cbfstool && \
+    make -C util/cbfstool install && \
     export USE_FLASHROM=0 && \
-    make && \
-    make install && \
+    make -C 3rdparty/vboot && \
+    make -C 3rdparty/vboot install && \
+    mkdir /vboot && \
+    cp -r 3rdparty/vboot/scripts /vboot/ && \
     unset USE_FLASHROM && \
-    cd ../../ && \
-    cd util/smmstoretool && \
-    make && \
-    make install && \
-    rm -rf tests build
+    make -C util/smmstoretool && \
+    make -C util/smmstoretool install && \
+    make -C util/ifdtool && \
+    make -C util/ifdtool install && \
+    cd .. && \
+    rm -rf coreboot
 
 RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
     cd wolfssl && \
     ./autogen.sh && \
     ./configure --libdir /lib/x86_64-linux-gnu/ && \
     make && \
-    make install
-
-# ifdtool is needed for DCU
-RUN cd coreboot && \
-    make -C util/ifdtool && \
-    make -C util/ifdtool install
+    make install && \
+    cd .. && \
+    rm -rf wolfssl
 
 # nvmtool is needed for DCU
 RUN rm -rf coreboot && \
@@ -72,10 +66,11 @@ RUN rm -rf coreboot && \
     git checkout -b change-67129 FETCH_HEAD && \
     cd util/nvmtool && \
     make && \
-    cp nvm /usr/local/bin/nvm
-
+    cp nvm /usr/local/bin/nvm && \
+    cd ../../.. && \
+    rm -rf coreboot
 
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
 
-ENTRYPOINT ["/entrypoint.sh"]
+USER coreboot
