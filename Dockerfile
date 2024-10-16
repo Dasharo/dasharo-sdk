@@ -33,15 +33,19 @@ RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_
 # not part of the release yet
 RUN git clone https://github.com/coreboot/coreboot.git  && \
     cd coreboot && \
-    git checkout 05bb053e6356b30bfa2ae27d0b38e592e4c58111 && \
-    cd util/cbfstool && \
-    make && \
-    make install && \
-    cd ../../ && \
-    cd util/smmstoretool && \
-    make && \
-    make install && \
-    rm -rf tests build
+    git checkout -f 24.08 && \
+    make -C util/cbfstool && \
+    make -C util/cbfstool install && \
+    export USE_FLASHROM=0 && \
+    make -C 3rdparty/vboot && \
+    make -C 3rdparty/vboot install && \
+    unset USE_FLASHROM && \
+    make -C util/smmstoretool && \
+    make -C util/smmstoretool install && \
+    make -C util/ifdtool && \
+    make -C util/ifdtool install && \
+    cd .. && \
+    rm -rf coreboot
 
 RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
     cd wolfssl && \
@@ -51,11 +55,6 @@ RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 
     make install && \
     cd .. && \
     rm -rf wolfssl
-
-# ifdtool is needed for DCU
-RUN cd coreboot && \
-    make -C util/ifdtool && \
-    make -C util/ifdtool install
 
 # nvmtool is needed for DCU
 RUN rm -rf coreboot && \
@@ -68,19 +67,6 @@ RUN rm -rf coreboot && \
     cp nvm /usr/local/bin/nvm && \
     cd .. && \
     rm -rf coreboot
-
-# Build vboot tools. We should use a common revision of vboot tools there,
-# which is known to support correctly all of the Dasharo platforms.
-RUN git clone https://github.com/Dasharo/vboot.git \
-      -b master \
-      --depth 1 && \
-    cd vboot && \
-    git checkout 22134690d7ced7b2ea824b71b597bb73586d99c6 && \
-    export USE_FLASHROM=0 && \
-    make && \
-    make install && \
-    unset USE_FLASHROM && \
-    rm -rf tests build
 
 # Needed for vboot futility to sign images with VBOOT_CBFS_INTEGRATION
 ENV CBFSTOOL=/usr/local/bin/cbfstool
