@@ -137,6 +137,10 @@ RUN \
     libc6-dev \
     libnss3-dev \
     libnss3 \
+		libssl-dev \
+		uuid-dev \
+		pkg-config \
+		dh-autoreconf \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
