@@ -1,4 +1,4 @@
-FROM coreboot/coreboot-sdk:2024-02-18_732134932b
+FROM coreboot/coreboot-sdk:2024-03-30_cccada28f7
 
 USER root
 
