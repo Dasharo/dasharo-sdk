@@ -6,9 +6,8 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
     gpg \
+    guilt \
     imagemagick \
-    uuid-runtime \
-    unzip \
     libxcb-icccm4 \
     libxcb-image0 \
     libxcb-keysyms1 \
@@ -20,6 +19,8 @@ RUN apt-get update && \
     libxcb-xinerama0 \
     libxcb-xkb1 \
     libxkbcommon-x11-0 \
+    unzip \
+    uuid-runtime \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
