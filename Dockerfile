@@ -45,7 +45,7 @@ RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 
     ./autogen.sh && \
     ./configure --libdir /lib/x86_64-linux-gnu/ && \
     make
-RUN cd wolfssl && make install V=1 > /wolfssl_install.log
+RUN cd wolfssl && make install
 RUN cd .. && \
     rm -rf wolfssl
 
