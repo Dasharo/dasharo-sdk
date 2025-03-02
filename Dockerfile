@@ -98,6 +98,11 @@ COPY --from=coreboot-sdk /lib/x86_64-linux-gnu/libwolfssl.so /lib/x86_64-linux-g
 COPY --from=coreboot-sdk /lib/x86_64-linux-gnu/libwolfssl.la /lib/x86_64-linux-gnu/
 COPY --from=coreboot-sdk /lib/x86_64-linux-gnu/pkgconfig/wolfssl.pc /lib/x86_64-linux-gnu/pkgconfig/
 COPY --from=coreboot-sdk /usr/local/include/wolfssl /usr/local/include/wolfssl
+COPY --from=coreboot-sdk /usr/bin/futility /usr/bin/futility
+COPY --from=coreboot-sdk /usr/bin/dumpRSAPublicKey /usr/bin/dumpRSAPublicKey
+
+RUN for prog in dump_fmap dump_kernel_config gbb_utility vbutil_firmware vbutil_kernel vbutil_key vbutil_keyblock; do \
+    ln -sf /usr/bin/futility "/usr/bin/$prog"; done
 
 RUN \
 	useradd -p locked -m coreboot && \
