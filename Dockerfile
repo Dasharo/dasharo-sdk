@@ -123,6 +123,7 @@ RUN \
     libc6-dev \
     libnss3-dev \
     libssl-dev \
+    liblzma-dev \
     pkg-config \
     python-is-python3 \
     python3 \
