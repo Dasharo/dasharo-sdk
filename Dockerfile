@@ -4,50 +4,50 @@ USER root
 # We need the latest smmstoretool changes to be included,
 # not part of the release yet
 RUN \
-	  cd /tmp && \
-    git clone https://github.com/coreboot/coreboot.git  && \
-    cd coreboot && \
-    git checkout -f ${DOCKER_COMMIT} && \
-    make -C util/cbfstool && \
-    make -C util/cbfstool install && \
-    export USE_FLASHROM=0 && \
-    make -C 3rdparty/vboot && \
-    make -C 3rdparty/vboot install && \
-    mkdir /vboot && \
-    cp -r 3rdparty/vboot/scripts /vboot/ && \
-    unset USE_FLASHROM && \
-    make -C util/smmstoretool && \
-    make -C util/smmstoretool install && \
-    make -C util/ifdtool && \
-    make -C util/ifdtool install && \
-    cd .. && \
-    rm -rf coreboot
+		cd /tmp && \
+		git clone https://github.com/coreboot/coreboot.git  && \
+		cd coreboot && \
+		git checkout -f ${DOCKER_COMMIT} && \
+		make -C util/cbfstool && \
+		make -C util/cbfstool install && \
+		export USE_FLASHROM=0 && \
+		make -C 3rdparty/vboot && \
+		make -C 3rdparty/vboot install && \
+		mkdir /vboot && \
+		cp -r 3rdparty/vboot/scripts /vboot/ && \
+		unset USE_FLASHROM && \
+		make -C util/smmstoretool && \
+		make -C util/smmstoretool install && \
+		make -C util/ifdtool && \
+		make -C util/ifdtool install && \
+		cd .. && \
+		rm -rf coreboot
 
 # nvmtool is needed for DCU
 RUN cd /tmp && \
-    git clone https://review.coreboot.org/coreboot.git && \
-    cd coreboot && \
-    git fetch https://review.coreboot.org/coreboot refs/changes/29/67129/5 && \
-    git checkout -b change-67129 FETCH_HEAD && \
-    cd util/nvmtool && \
-    make && \
-    cp nvm /usr/local/bin/nvm && \
-    cd ../../.. && \
-    rm -rf coreboot
+		git clone https://review.coreboot.org/coreboot.git && \
+		cd coreboot && \
+		git fetch https://review.coreboot.org/coreboot refs/changes/29/67129/5 && \
+		git checkout -b change-67129 FETCH_HEAD && \
+		cd util/nvmtool && \
+		make && \
+		cp nvm /usr/local/bin/nvm && \
+		cd ../../.. && \
+		rm -rf coreboot
 
 RUN wget https://github.com/LongSoft/UEFITool/releases/download/A68/UEFIExtract_NE_A68_x64_linux.zip && \
-    unzip UEFIExtract_NE_A68_x64_linux.zip && \
-    mv uefiextract /usr/local/bin && \
-    rm UEFIExtract_NE_A68_x64_linux.zip
+		unzip UEFIExtract_NE_A68_x64_linux.zip && \
+		mv uefiextract /usr/local/bin && \
+		rm UEFIExtract_NE_A68_x64_linux.zip
 
 RUN git clone https://github.com/wolfSSL/wolfssl.git -b v5.7.0-stable --depth=1 && \
-    cd wolfssl && \
-    ./autogen.sh && \
-    ./configure --libdir /lib/x86_64-linux-gnu/ && \
-    make
+		cd wolfssl && \
+		./autogen.sh && \
+		./configure --libdir /lib/x86_64-linux-gnu/ && \
+		make
 RUN cd wolfssl && make install
 RUN cd .. && \
-    rm -rf wolfssl
+		rm -rf wolfssl
 
 FROM debian:stable-slim AS intermediate
 
@@ -55,21 +55,21 @@ COPY --from=coreboot-sdk /opt/xgcc /opt/xgcc
 
 # Cleanup unecessary xgcc targets
 RUN \
-  rm -rf /opt/xgcc/bin/clang-* \
-    /opt/xgcc/bin/llvm-* \
-    /opt/xgcc/bin/aarch64-* \
-    /opt/xgcc/bin/riscv64-* \
-    /opt/xgcc/bin/powerpc64-* \
-    /opt/xgcc/bin/nds32le-* \
-    /opt/xgcc/bin/arm-eabi-* \
-    /opt/xgcc/lib/gcc/nds32le-elf \
-    /opt/xgcc/lib/gcc/powerpc64-linux-gnu \
-    /opt/xgcc/lib/gcc/aarch64-elf \
-    /opt/xgcc/lib/gcc/riscv64-elf \
-    /opt/xgcc/lib/gcc/arm-eabi \
-    /opt/xgcc/lib/clang \
-    /opt/xgcc/lib/libclang* \
-    /opt/xgcc/lib/libLLVM*
+	rm -rf /opt/xgcc/bin/clang-* \
+		/opt/xgcc/bin/llvm-* \
+		/opt/xgcc/bin/aarch64-* \
+		/opt/xgcc/bin/riscv64-* \
+		/opt/xgcc/bin/powerpc64-* \
+		/opt/xgcc/bin/nds32le-* \
+		/opt/xgcc/bin/arm-eabi-* \
+		/opt/xgcc/lib/gcc/nds32le-elf \
+		/opt/xgcc/lib/gcc/powerpc64-linux-gnu \
+		/opt/xgcc/lib/gcc/aarch64-elf \
+		/opt/xgcc/lib/gcc/riscv64-elf \
+		/opt/xgcc/lib/gcc/arm-eabi \
+		/opt/xgcc/lib/clang \
+		/opt/xgcc/lib/libclang* \
+		/opt/xgcc/lib/libLLVM*
 
 
 FROM debian:stable-slim AS dasharo-sdk
@@ -112,31 +112,31 @@ RUN \
 	apt-get -y install --no-install-recommends \
 		libcrypto++-dev \
 		make \
-    binutils \
-    ca-certificates \
-    clang \
-    g++ \
-    gcc \
-    git \
-    guilt \
-    imagemagick \
-    libc6 \
-    libc6-dev \
-    libncurses-dev \
-    libnss3-dev \
-    libssl-dev \
-    liblzma-dev \
-    lld \
-    llvm \
-    pkg-config \
-    python-is-python3 \
-    python3 \
-    unzip \
-    uuid-dev \
-    uuid-runtime \
-    && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+		binutils \
+		ca-certificates \
+		clang \
+		g++ \
+		gcc \
+		git \
+		guilt \
+		imagemagick \
+		libc6 \
+		libc6-dev \
+		libncurses-dev \
+		libnss3-dev \
+		libssl-dev \
+		liblzma-dev \
+		lld \
+		llvm \
+		pkg-config \
+		python-is-python3 \
+		python3 \
+		unzip \
+		uuid-dev \
+		uuid-runtime \
+		&& \
+		apt-get clean && \
+		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir /home/coreboot/.ccache && \
 	chown coreboot:coreboot /home/coreboot/.ccache && \
