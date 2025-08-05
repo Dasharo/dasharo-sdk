@@ -114,6 +114,7 @@ RUN \
 		make \
     binutils \
     ca-certificates \
+    clang \
     g++ \
     gcc \
     git \
@@ -124,6 +125,8 @@ RUN \
     libnss3-dev \
     libssl-dev \
     liblzma-dev \
+    lld \
+    llvm \
     pkg-config \
     python-is-python3 \
     python3 \
