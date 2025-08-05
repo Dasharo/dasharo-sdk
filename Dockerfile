@@ -122,6 +122,7 @@ RUN \
     imagemagick \
     libc6 \
     libc6-dev \
+    libncurses-dev \
     libnss3-dev \
     libssl-dev \
     liblzma-dev \
