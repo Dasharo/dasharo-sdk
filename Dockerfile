@@ -138,6 +138,28 @@ RUN \
 		apt-get clean && \
 		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Dependencies for Intel FITc (BtG provisioning)
+RUN \
+	apt-get update && \
+	apt-get clean && \
+	apt-get autoclean && \
+	apt-get -y install --no-install-recommends \
+		libxcb-icccm4 \
+		libxcb-image0 \
+		libxcb-shm0 \
+		libxcb-keysyms1 \
+		libxcb-randr0 \
+		libxcb-render-util0 \
+		libxcb-render0 \
+		libxcb-shape0 \
+		libxcb-sync1 \
+		libxcb-xfixes0 \
+		libxcb-xinerama0 \
+		libxcb-xkb1 \
+		libxcb1 \
+		libxkbcommon-x11-0 \
+		libxkbcommon0
+
 RUN mkdir /home/coreboot/.ccache && \
 	chown coreboot:coreboot /home/coreboot/.ccache && \
 	mkdir /home/coreboot/cb_build && \
