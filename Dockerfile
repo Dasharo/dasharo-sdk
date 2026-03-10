@@ -134,6 +134,9 @@ RUN \
 		unzip \
 		uuid-dev \
 		uuid-runtime \
+		golang-go \
+		bsdextrautils \
+		zlib1g-dev \
 		&& \
 		apt-get clean && \
 		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -158,7 +161,8 @@ RUN \
 		libxcb-xkb1 \
 		libxcb1 \
 		libxkbcommon-x11-0 \
-		libxkbcommon0
+		libxkbcommon0 && \
+	rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /home/coreboot/.ccache && \
 	chown coreboot:coreboot /home/coreboot/.ccache && \
