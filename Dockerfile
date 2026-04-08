@@ -1,8 +1,6 @@
 FROM coreboot/coreboot-sdk:2025-10-19_4a3cc37cbd AS coreboot-sdk
 
 USER root
-# We need the latest smmstoretool changes to be included,
-# not part of the release yet
 RUN \
 		cd /tmp && \
 		git clone https://github.com/coreboot/coreboot.git  && \
@@ -16,10 +14,20 @@ RUN \
 		mkdir /vboot && \
 		cp -r 3rdparty/vboot/scripts /vboot/ && \
 		unset USE_FLASHROM && \
-		make -C util/smmstoretool && \
-		make -C util/smmstoretool install && \
 		make -C util/ifdtool && \
 		make -C util/ifdtool install && \
+		cd .. && \
+		rm -rf coreboot
+
+# smmstoretool does not compile anymore with newer toolchain and coreboot tag
+# Move it back to the RUN command above when patch is merged.
+RUN cd /tmp && \
+		git clone https://review.coreboot.org/coreboot.git && \
+		cd coreboot && \
+		git fetch https://review.coreboot.org/coreboot refs/changes/58/92058/1 && \
+		git checkout -b change-92058 FETCH_HEAD && \
+		make -C util/smmstoretool && \
+		make -C util/smmstoretool install && \
 		cd .. && \
 		rm -rf coreboot
 
