@@ -1,4 +1,4 @@
-FROM coreboot/coreboot-sdk:2024-02-18_732134932b AS coreboot-sdk
+FROM coreboot/coreboot-sdk:2025-10-19_4a3cc37cbd AS coreboot-sdk
 
 USER root
 # We need the latest smmstoretool changes to be included,
