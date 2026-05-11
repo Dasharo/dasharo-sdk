@@ -136,6 +136,7 @@ RUN \
 		liblzma-dev \
 		lld \
 		llvm \
+		meson \
 		pkg-config \
 		python-is-python3 \
 		python3 \
