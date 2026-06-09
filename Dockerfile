@@ -123,6 +123,7 @@ RUN \
 		binutils \
 		ca-certificates \
 		clang \
+		file \
 		g++ \
 		gcc \
 		git \
