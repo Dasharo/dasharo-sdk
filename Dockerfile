@@ -146,6 +146,7 @@ RUN \
 		uuid-runtime \
 		golang-go \
 		bsdextrautils \
+		wget \
 		zlib1g-dev \
 		&& \
 		apt-get clean && \
