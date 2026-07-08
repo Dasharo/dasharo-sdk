@@ -148,6 +148,12 @@ RUN \
 		bsdextrautils \
 		wget \
 		zlib1g-dev \
+		xz-utils \
+		curl \
+		flex \
+		bison \
+		libelf-dev \
+		bc \
 		&& \
 		apt-get clean && \
 		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
