@@ -194,4 +194,10 @@ ENV CBFSTOOL=/usr/local/bin/cbfstool
 
 ENV PATH=$PATH:/opt/xgcc/bin
 USER coreboot
+
+# Install latest stable Rust for user coreboot
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/home/coreboot/.cargo/bin:${PATH}"
+RUN rustup target add x86_64-unknown-linux-musl
+
 VOLUME /home/coreboot/.ccache
