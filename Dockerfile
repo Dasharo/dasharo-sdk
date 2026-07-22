@@ -154,6 +154,7 @@ RUN \
 		bison \
 		libelf-dev \
 		bc \
+		openssh-client \
 		&& \
 		apt-get clean && \
 		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
