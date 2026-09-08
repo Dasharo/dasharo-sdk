@@ -156,6 +156,11 @@ RUN \
 		bc \
 		openssh-client \
 		jq \
+		python3-lxml \
+		python3-packaging \
+		python3-cryptography \
+		python3-crcmod \
+		python3-cffi \
 		&& \
 		apt-get clean && \
 		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
