@@ -148,6 +148,7 @@ RUN \
 		bsdextrautils \
 		wget \
 		zlib1g-dev \
+		xxd \
 		xz-utils \
 		curl \
 		flex \
