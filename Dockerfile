@@ -146,6 +146,7 @@ RUN \
 		uuid-runtime \
 		golang-go \
 		bsdextrautils \
+		ccache \
 		wget \
 		zlib1g-dev \
 		xxd \
